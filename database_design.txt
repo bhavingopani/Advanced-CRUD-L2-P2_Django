@@ -32,6 +32,298 @@ Database Desing
 
 
 KEYS
- - primary keys
- - foreign keys
- - its not just these two keys. there are a lot of keys
+ - primary key
+ - foreign key
+ 
+== General Ideas about the key and Uniqueness
+    - if a table structure is such that you cannot have every single row be unique. You need to consider adding some kind of column to ENFORCE Uniqueness Such as a id. But generally we will be able to make unique.
+    - Sometimes its user_id which makes it unique and unsername also does the job as that is also unique 
+        - the diff between user_id  and username is that .. user_id is made for the sake of database which will not be used by any user or someone.. 
+        - whereas username has some realworld implications.
+
+ - its not just these two keys. there are a lot of keys 
+ 
+ superkey and candidatekey
+ - Super key
+    - its means Any number of columns that forces every single row in the table to be unique
+        - for example.in the userprofile or useraccount table...
+        - columns name - username, email, fnam, lnam, DOB, hobbies, tests, favorite movies etc.
+            - here if we see -- all the columns can be same or duplicate EXCEPT USERNAME and EMAIL
+        - So super key means.. Any number of Columns (here its username and email) that forces every single row(its all the columns except username and email) in the table to be unique    
+
+
+ - Candidate Key
+    - its the opposite of the superkey.
+    - Candidate key -- is LEAST number of columns that forces every single row in the table to be unique
+    - in the above superkey exaple.. We can allow email and other columns to be same .. BUT WE CAN NOT ALLOW USERNAME TO BE THE SAME.. 
+        Otherwise we will not be able to differentiate or separate the two rows or two person's database
+    - SO A CANDIDATE KEY -- it the least number of columns needed to force every single row to be unique
+    - So here in the example... USERNAME IS ENOUGH to Make it unique
+
+== implemeting superkey and candidatekey
+ 
+ AsK YOURSELF BELOW QUESTIONS First
+
+ - Can every row be unique? 
+    - if yes .. that means we have superkey. we dont have to figure out which columns and all 
+    - If it can be unique then we move on to figure out the candidatekey
+ 
+ - is it possible to be dublicate?
+    - that means we have to figure out something else. - If its not .. that is good
+
+ - How many columns are needed?
+    - now you can figure out least number of columns in order to create unlimited Uniqueness ever.
+    - So figure our how many colums are need to be unique?
+      - once we know that .. that means we have candidatekey - its just 1 in the above example.. its username
+ 
+ - How many candidatekey do i have?
+    - CK is for candidatekey
+    - we can altually have more than 1 candidate key.
+    - for exaple.
+        in the last example.. we had username and email 
+        - HERE Email can also be a candidate key -- because we can always put a requirment by using unique requirment
+        - so there are chances we can have more than 1 candidate key
+    - we can also have least columns required for candiates as below.
+    - lets say if the username and email is not unique
+      - then we can use combination of columns. like .. fname + lname +mname + birthday + Address
+        - combining this .. we can use it as candidate key.
+        - there will be a very very rare chances that a person with the above combination are more than 1
+        - yes of course it can be.. fnam+lname.. same person.. that is why use the combination as above.
+
+    - but this is not a good way to use these type of combination. Yes of course its very very rare that we find copy behing it,.
+    - there can be more than one candidate key like. ck1 , ck2, ck3 ... and we have to decide which one will be our primary key.
+
+
+- Primary key
+
+  - it has to be unique
+  - it can never change 
+  - it can not be NULL
+
+  - it the above three.. than that can be our primary key.
+  - So we can define this as our primary key and we can make connections between tables with that.
+
+
+
+
+- Alternate Key
+ - it could be primary key.. but All the keys that are not selected as primary keys
+ - usually we dont define all the keys as alternate keys in our database.
+ - Sometimes we may want to difine as sometimes we want play with the info .. like searching and all
+    - so that we can create an index on the alternate key.
+    - like we can create an index on email./
+    - if we dont want an index on that.. do not define it.
+    - usually used for searching for that kind of info.
+
+
+- Surrogate Key and Natural Key (we can say these are categories of primary key)
+    - Natural key 
+        - something that is naturally in the table.
+
+    - Surrogate Key
+       - made up key
+       - if we decide to use Surrogate key..
+            - for example.. lets say we have three tables .. like user table , sale table, comment table.
+                - Now if we define Surragate key.. what we do is..
+                - We create a column name called id of the respective tables. like..
+                    - in user table --  we create user_id column
+                    - in sale table --  we create sale_id column
+                    - in comment table -- we create comment_id column
+                        - in comment table -- we will need a reference - user_id as foreign key which points back to the user table.. to know who made the comment.
+                        - it can have autoIncreament feature.. raise by 1 every time we make new row 
+    
+    - Surrogate key are completely private.. no one knows surrogate key except for the people working in the database
+            - reason for that. is .. it does not have real world meaning.
+            - if we try to give that id in the listing or report.. that means we are giving a meaning in the real world.. so that will start becoming Natural key
+    - Natural key is already there in the database and defined by the database.. whereas surrogate key is we just add to the database.
+    - if you cant find a good natural key THEN WE CAN ALWAYS USE SURROGATE KEY instead.
+    - BUT YOU ALWAYS WANT TO TRY TO NATURALLY MAKE EVERYTHIG UNIQUE
+
+
+- SHOULD WE USE SURROGATE KEY OR NATURAL KEY
+    - First understand the diff between the two.
+        - Natural key
+            - here we dont have to define any new column
+            - dont have to define any new data. we can use already defiend by db as natural key.
+            - Good part about this is .. SUrrogate key is number all the time. whereas Natural key can be number and text too.
+        - Surrogate key
+            - we have to add one column like user_id, car_id etc.
+            - Good part about this is .. SUrrogate key is number all the time. whereas Natural key can be number and text too.
+            - its sometimes confusing as we use number and if the column name is not right than its confusing.
+
+    - Which one to use?
+        - It depends on you. Some prefer natural , some prefer surrogate
+        - the guy said surrogate he personally prefers.. 
+            - as in surrogate key we dont have to worry about the Uniqueness, Neverchanging properties, not null properties. -- SO HE IS USING THAT> - just define and give id.. thats it. 
+        - BUT WHEN WE USE SURROGATE KEY.
+            - ALWAYS MAKE SURE THAT IT DOES NOT HAVE ANY REAL WORLD MEANGIN>> IT SHOULD NOT BE LISTED OR> NO ONE SHOULD HAVE ACCESS TO SEE SURROGATE KEY EXCEPT DEVS and people who have access to the database..
+
+        - ITS ENTIRELY UPTO YOU .. WHICH ONE TO USE..  BOTH ARE GOOD>
+        - TRY BOTH>. And DECIDE.
+            - Check which performs better.. or which one is best for you or your application.
+
+        - Usually when defining keys.. Always use Natural key.. OR always use Surrogate key.
+        - Dont just use both of them -- that is not a good way.
+        - as we want to keep it consistent.
+
+
+- Foreign Key
+    - its a reference - it references a primary key
+    - primary key in the same table.. and pk in a separate table.
+
+    - if any changes to the forien kye table.. record.. it automatically updated.. as its linked with the id. that is the biggest problem.. that a foriegn key solves.
+    - every table has one primary key only.. That can be a combination of columns.. or a single row etc.
+        - primary key can be (fname + lname) - this group can also be primary key.
+        - it can also be  fname as primary key.. or lname as pk. 
+
+    - In forein key.. A table can have multiple foriegn key.. not like pk.. which should be only one.
+    - But in a table. each foriegn key column can not have multiple foreing key in a single... column.
+    - Foreing keys values can change as the references change.
+
+  = NOT NULL foreign Key.
+    - first of all - NOT NULL means db wont accept not null -- SO we have to give some values to that,
+    - Here NOT NULL foreign key means... A RELATIONSHIP is required.
+       - every single row has to have a relationship - or foreign key
+    - primary key is always NOT NULL as it is its property
+    - foreing key can be optional or not required.
+
+    for example. 1 - NOT A GOOD IDEA to have NOT NULL foreign key.. in this case/
+        - instructor table and class table..
+        - if we use NOT NULL fk .. that means . every class needs to have an instructor -- a class can not be created without instructor. - That can create problem if there is no instructor assigned to a class in real world.
+        - for this example.. NOT NULL might not be a good idea.
+    
+    for example. 2 - GOOD TO HAVE in this case.. NOT NULL foreign key .. is a good idea in this case.
+
+        -  If there is an example where the instructor is required to have ... To create any class... then THAT IS A GOOD IDEA.
+        - ANOTHER GOOD EXAMPLE -- where NOT NULL Foreign key .. is a good idea to have.
+            - creditcard table...   and person_holding_the_card  table.
+            here... we have a card table with person_id which reference to the person table..
+                - in this case NOT NULL Foreing key is good to have... 
+                - as without card there is no person holding the card.
+                - a card can only be there.. with a person ordering the card.
+                - IN short... every signle row in the card table.. is going to require a value of card owner.
+                - if its not NOT NULL fk.. that means it will have rows without card owner.
+                    - which can also mean.. the respective card is expired or outdated.. or lost or may be new card which are yet to be issued... SO THAT DEPENds on the requirement if you want to use NOT NULL fk... etc.
+                    - or we can have two tables like..
+                        - OWNED CARD TABLE (where we use NOT NULL foreign key (person_owner_id))
+                        - OTHER CARD TABLE (where we do not require.. NOT NULL foreign key.)
+
+
+    - FOREIGN KEY CONTRAINTS.
+        - always make sure.. when creating child data record .. - check if its already have parant id o
+        - the same way always have to think --whether our action will update child table only.. or parant table only.. 
+            - whenever required..always make sure that its in sync.
+        - FOreign key connstraints.. help to solve that problem
+            - so that databse is self managed.. we dont have to do anything if we use foreign key connstraints
+
+
+        When we create an SQL statement -- we can have these two.
+        these keywords are about parant
+            ON DELETE
+            ON UPDATE
+
+        - this means -- when we update or delete the parant we want children to do something.. - this is about parant.
+        - these keywords is talking about the foreign key contraints  and it refers to the parant.
+
+        - THe below keywords are about child
+            RESTRICT (no action) - its going to throgh an error
+            CASCADE
+            SET NULL
+        - when we use RESTRICT as below
+            ON DELETE  RESTRICT.   -- here in this case it will not allow to do the action -- means in this case the parant will no be deleted.
+            ON UPDATE  RESTRICT.  --- The same way it will not allow it to do that action.
+
+        - when we use CASCADE as below 
+            - it will do whatever we do to the parant to the child.
+            - that means if we delete the parant -- we delete child as well.
+
+            ON DELETE CASCADE -- it will do that action -- we delete parant it will delete all the references too. or of the child as well.
+            ON UPDATE CASCADE -- if any update will happen -- All the child table if linked or refered .. will be updated too.
+
+        - when we use SET NULL as below.
+            - Whatever we do with ON DELETE or ON UPDATE -- with SET NULL...
+                    - It will make the other child if linked.. SET NULL or NO VALUES> according. 
+                    - If deleted from the parant means.. ON DELETE SET NULL --- all the child table will be SET NULL -- or No values .. no matter how many tables are linked to it.
+                    - If updated from the parant means ON UPDATE SET NULL ---- all the child table values will be SET NULL - or no values on Update actions.
+
+                    - if its already NOT NULL in the child table -- then it will be SET NULL.
+
+SIMPLE KEY , COMPOSITE KEY , COMPOUND KEY
+
+    - SIMPLE KEY    
+        - means its one column
+        - for example, surrogate key.
+        - for example, usarename
+    
+    - COMPOSITE KEY
+        - means it consists of TWO OR MORE Columns
+        - can take example of natural key as that can be a combination of columns.. whereas Surrogate key is just one column and hence surrogate key are part of simple key
+        - (fn + ln + email) - this whole group can be a primary key..or a key... hence its calleed composite key
+        - in a composite key at least one column of those must not be a key.. but if its compound all of those columns are keys themselves.
+
+    - COMPOUND KEY
+        - Some system or database dont differentiate composite and compound .. they use it interchangeblly.
+        - COMPOUND KEY means...
+            - There are multiple columns .. Combination of multiple columns as a key... AND at the same time those columns are keys themselves.
+            - The most common example of this ... intermediary tables.
+            - for example, two foreign keys in an intermediary table .. if we combine them and make it a key.. Then  its compound key. because -- they are also keys and we have made another key out of it.
+
+ =============
+ ENTITY RELATIONSHIP MODELING
+
+ EER Model (Enhanced/extended Entity relationship)
+ ERD Model (Enhanced Relationship Diagram)
+ ER Model (Entity Relaionship)
+
+     
+ DDL (Data Definition language)
+
+
+- Dont define actual values when designing database
+
+- drawing database desing - can be done in mysql workbench etc.
+
+- can give relationship with lines ---  like ------< this way. we can say there is relationship - its called
+
+- to show one to many , many to many, one to one.. there are particular lines that we have to draw
+ 
+ CArdianility
+ =  the below is the lines for each         
+
+                        One --|------------|-- One    (simply means.. 1 row can be connected to 1 row only)
+                        One --|------------<-- Many   (simply means.. 1 row can be connected to many rows)
+                        Many-->------------<-- Many   (Simply means.. Many rows can be connected to Many rows) of course there will be intermediary tables here.. to be connected
+                            THis is not possible as there will be intermediary   - MANY TO MANY -- will have intermediary table .. so wont be like this.. will be connected to the intermediary table.
+
+
+Modelity
+
+- it means whether or not a child is a required OR if a Relationship is required
+                    (Card Holder)            CHILD( Card)
+                       One --|------------0-1--One (0 zero means.. a column does not have a NOT NULL characteristics - MEANS IT ACCEPTS NO VALUE) This can accept no value
+                                                    - Here we have One to One - so a card holder can have upto one card only..BUT ITS NOT REQUIRED..  when its not NOT NULL or 0
+                                                    - so in short it means -- 0 or 1 card 
+
+                                                    - In short when its zero -- we might not need relationship for certain Rows.    
+
+                       One --|------------1-1--One (1 1 means...  1 or 1 card .. - SO it means.. Its NOT NULL when its 1  )
+
+                       One --|------------0-<--Many (This means ... at least 0 card)
+                       One --|------------1-<--Many  (This means ... at least 1 card) - it means NOT NULL when its 1
+
+    -WHEN WE DESIGN THIS.. WE ARE TALKING TABLE TO TABLE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
