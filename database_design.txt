@@ -1,0 +1,37 @@
+Database Desing
+
+- checked all the things in Db again. from freecodecamp - to clear the concepts.
+
+- what is db, tables, how to connect, Relationships, keys etc. - always go back to video for the same.
+
+-Relationships concept and how to implement and desing it.
+  - One to One Relationships (always watch that video of freecodecamp if required again.)
+    - only one table there - no parant or child table.
+    - like a user can own 1 car AND..   a car can be owned by one user only.
+    - here there is no parant child table or relationships involved
+  
+  - One to Many Relationships
+    - Two tables there
+    - One to Many means .. 1 table is parant and 1 table is child
+    - For example, 1 Table - List of Halls of Heny Arcade is there. 
+                   2nd Table - List of all cleaners of Heny Arcade
+    - This is Many(1st table) to One(2nd table) or Many to One is the same thing
+    - The reasone why we call it many to one or one to Many
+        - Here the Parent Table is 1st table - Hall
+        - The child table is 2nd table -- Cleaner
+        - SO a cleaner can be assigned to multiple halls - BUT a Hall can not be assigned multiple cleaners.
+        - In other words-- A cleaner can go to multiple halls and a hall can not have multiple or many cleaners.
+  
+  - Many to Many Relationships 
+    - This means there is no child table if we consider actual tables because many to many relationships is not possible... if we dont create on additional table called intermediary table OR junction table.
+    - for example,  a teacher can teach to many classes and a Class can be taught by many teachers. This is an exaple of Many to Many relationships..  Here it depends on school if the teacher can teach to multiple classes - SO THIS IS THE EXAMPLE OF MANY TO MANY
+         - now we draw a table -- we can not just assign a teach id to class table or a class id to teacher table.. That can not work.
+         - HENCE WE HAVE TO CREATE A CHILD TABLE -- CALLED -- intermediary or intermediate or Junction table. -- 
+            - In this table - we call it lets say teacherclass table..   Just assign both of the Parant tables primary keys to it
+            - Now you can have the view however we like using queries and joins.
+
+
+KEYS
+ - primary keys
+ - foreign keys
+ - its not just these two keys. there are a lot of keys
