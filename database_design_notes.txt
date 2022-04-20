@@ -293,7 +293,7 @@ SIMPLE KEY , COMPOSITE KEY , COMPOUND KEY
                         One --|------------|-- One    (simply means.. 1 row can be connected to 1 row only)
                         One --|------------<-- Many   (simply means.. 1 row can be connected to many rows)
                         Many-->------------<-- Many   (Simply means.. Many rows can be connected to Many rows) of course there will be intermediary tables here.. to be connected
-                            THis is not possible as there will be intermediary   - MANY TO MANY -- will have intermediary table .. so wont be like this.. will be connected to the intermediary table.
+                            THis is not possible as there will be intermediary(one to many table)   - MANY TO MANY -- will have intermediary table .. so wont be like this.. will be connected to the intermediary table.
 
 
 Modelity
@@ -317,6 +317,209 @@ Modelity
 
 
 
+====================
+DATABASE NORMALIZATION
+
+- Its a process where we go through our database plan or design and WE START CONRRECTING THINGS or solving problems.. like Data Integrity problem , repeating data etc.
+- You can have checklist that you can follow generally -- so when you get to the end you have a pretty good desing thing.
+- Why we need this?
+    - Because we want a systemetic to produce good structured or quality normalized database
+- We want everything to be automac. we dont have to think about the data depending on other data.
+
+
+- There are three main forms. -- if you want to go deep ... you can have a many other things.. but basically -- these are these things
+    - 1st NF (normal form)
+    - 2nd NF (normal form)
+    - 3rd NF (normal form)
+
+    - you can not just jump in to 2nd normal form .. without going over 1st normal form.
+    - the same way you cannot just jump over to 3rd NF without goign over 1st and 2nd NFs.
+    - Its like steps.. You cannot do 2nd step without the 1st step.
+
+
+1st Normal Form of Database Normalization
+------
+- This is the first step in Database Normalization
+- This normal deals with Data being automic,, Automaticity
+- In the below three examples.. there are problems.
+
+    Example.1. columns are 
+                user_id   fname     lname       email                       Address
+                1         bhavin    gopani      gopani7874@gmail.com        B7, Surjit Raje Socoiety, Aurangabad, UP, 658954
+
+                problem in example 1 -  The address has .. house no, Society name, City name, Statename , pincode == All these data are in one column -- So the column is a problem.
+
+                solutions: this can be resolved by breaking up the respective colums or values. Here we can solve the Address problem.. By breaking it into multiple columns like House No, CityName, State, pin as a seperate column will solve the problem,
+   
+   
+    Example.2  columns are
+                user_id     fname       lname       email
+                1           bhavin      gopani      gopani7874@gmail.com,gopanibj1@gmail.com
+
+                problem in example 2 - the  eamil has two emails. of course its with comma .. but it has two emails. in one columns..  so the values are the problem in  this case.
+
+                solutions: here we have column is correct but the values are creating a problem.
+
+                        - here what we can do is.. we can create a separate table for email.
+
+                User table                                        
+                    user_id      fname      lname                      
+                    1           bhavin      gopani
+
+                email table.
+                    email_id        email                       user_id(as Foreign key)
+                    2               gopani7874@gmail.com        1
+                    3               gopanibj1@gmail.com         1
+
+                THIS WAY WE CAN CREATE SEPARATE TABLE AND SOLVE THE PROBLEM. here the dublication of 1 in the email table is fine ..as IT IS FOREIGN KEY (FK) -- so this way we dont have any repeating data in any of the tables. except foreign key
+
+
+
+
+
+    Example.3  columns are
+                user_id      fname       lname          email
+                1           bhavin      gopani          gopani7874@gmail.com
+                1           bhavin      gopani          gopanibj1@gmail.com
+
+                problem in example 3 - the values for the row is the problem... here we have under same surrogate colunm .. which should not be the case. example 2 and 3 basically have the same problem.
+                #the same as above problem. So just solve the same way
+    
+
+
+2nd Normal Form of Database Normalization
+------
+- Second normal form deals with REMOVING PARTIAL DEPENDENCIES -- Its possible when column only depends on the parts of primary key -- for that - we have to have .. compound or composite key. - That means the primary keys have to be multiple columns 
+- here dependencies means...   
+    for example there is a table..   
+        
+        user_id  name   phone email
+        
+        - here all the columns like name , phone , email all depends on primary key .. which is user_id in this case.
+
+        - same way       PARTIAL DEPENDENCIES -- usually happens in MANY - TO - MANY Relationships  - IF these tables are not correctly desinged then that will create partial dependencies.
+
+        for example - there are two tables.. book and authors with many to many relationship --- so we have to create third table/ intermediary table for junction or pivot, or intermediary table.
+                    - Many to Many relationships -   A Author can write many books and A book can be written by many authors too.
+
+        table 1  author table                                   table2 - intermediary -    bookauthor table                      Table3 - Book table
+                author_id    author_name email   dob                author_id(fk)                                               book_id   book_name    isbn
+                                                                    book_id(fk)
+                                                                    author_position (its good to have as its related to both .. author table and book table..this relies on the book_id and author_id.. that's why in this table.)                                                    
+                                                                    isbn (Wrong can not be here)
+
+
+            -- In the above example.. somtimes people write a column like isbn or bookname in the intermediary table.. that is wrong.. and that is a case of partial dependencies.
+                    - the reason why its wrong.. because isbn or book name depends on the book_id which is primary key in the book table... but when you write that in the bookauthor table that creates PARTIAL DEPENDENCIES>
+
+        - SO TO SOLVE THIS PROBLEM --- JUST MAKE THE MANY TO MANY RELATIONSHIP DATABASE DESIGN CORRECT.. SO THAT YOU DONT HAVE THIS PROBLEM>
+
+
+if you have a table where there is primary key of only one column.. that means you are probably already in your second form of database normalization
+                - for example.. dob can not be dependent on the other ids or any other things.. as its just one and author_id only.
+
+3rd Normal Form of Database Normalization
+-------
+- after processing the above two forms .. Only then you can start with 3rd normal form.
+
+- It DEALS WITH TRANSITIVE DEPENDENCIES>
+    -it means... when a column depends upon a column which depends upon primary key.
+
+
+    for example., there is a review table.
+        Problem    
+                review table.
+                review_id (pk)         review          star          star_meaning     user_id(fk)
+
+        Here the problem is....
+                - Star meaning depends on star.. and the star depends on review_id(pk) which is a primary key.
+                - THIS IS A CASE OF TRANSITIVE DEPENDENCEIS... sometimes its longer like a column depends on a colunm wich depends on another colunm which depends on a column which is a primary key.
+        
+        Solution.
+                - The solution when there is a transitive DEPENDENCIES.... Take them out and create a separate table and.. make a column in the existing table (reviewtable) and give foriend key of the new table that is being created.
+                - SO NOW THE NEW TABLES HERE.
+
+                review table.
+                review_id(pk)          review       star_id(fk)      user_id(fk)
+
+                star table
+                star_id(pk)          star           star_meaning
+
+
+=============================================
+Clustered , Non Clustered and Composite Indexes
+
+- Non Clustered Index.
+    -   it points to the data  -- like it takes you to a broad topic or a topic.. then you can find in that data.
+    - we can have a list of non clustered index.
+    - here the data is no organized like phonebook .. like everything is line.. or like A-Z.
+    - here it will say.. ohh you want this data.. that is on page number 100 and you want this data... that is on page number 500.
+            -- it short.. it points to the data.. its not that .. it will in line.... IT JUST POINTS TO A DATA .. Where you can go.
+
+- Clustered Index
+    - Organises the actual data   -- it gives you actual data
+    - clustered index can only be one - as it actually organizes data that way.
+        for example, Phonebook -- organized a A-Z 
+        here you cannot organize data by Both A-Z and 0-9... we can only have one way to organize -- it cannot be both/
+
+- Composite Index
+    - Index on two or more columns.
+    for exa.
+            Where fname = bhavin and lname = gopani
+    - depends on database..some db suppors this type queries and some not.
+
+
+
+                
+
+
+Why we need it - Indexes??
+
+    -- Because a database understands Index...
+        - Generally we desing database where the information is found by database... JUST BY TABLE SCANNING.. where database will have to scan through the entire records.. 
+        - WHAT IF WE INDEX THE DATA... SO THAT DATABASE DONT HAVE TO SCAN THROUGH THE ENTIRE DATA EVERY TIME USER ASKS FOR THE INFO FROM THE DATABASE>
+
+        - THAT WAY WE CAN MAKE THE INFORMATION VIEW OR THE INTERACTION WITH DATABASE.. SUPERFAST.
+
+
+    -- Thats where Indexing is SUPER IMPORTANT .. Rather than just using table scanning when interating with the database
+            - Because TABALE SCANNIG will not work if you have millions of Rows....in like big project or applications.. HENCE Better to USE INDEXING at that time.
+
+    -- INDEXING WILL HELP DATABASE... Where to start searching for the database.,.. instead of starting from the top everytime it search the database. - its good because it will make our database a lot faster and saves a lot of resources.
+        
+        - db will use index seek
+
+    - THE DOWNSIDE OF THIS KIND INDEXED DATA IS>..
+        - when we create an index.....
+            - WHENEVER WE UPDATE THE DATABASE OR ANYTHING WE EDIT THERE ..
+                - THE DATABASE WILL HAVE TO UPDATE THE ACTUAL DATA>. and IT ALSO HAVE TO UPDATE THE INDEXES.
+                    - you can think of the phonebook.- where if you add 10 numbers with different names... IMAGIN .. HOW ARE YOU GONNA UPDATE THE PHONEBOOK.
+
+        - SO WHEN WE UPDATE INFORMATION ,, IT WILL TAKE A LITTLE LONGER.
+
+
+IN the database query We say ...
+(imagine we have 2 billion rows)
+        SELECT firstname, lastname, eamil, phonenumber where user_id = 1000000
+
+    - now in the above case .. the database will start from the 1st id ..or pk .. and will check one by one. and then show the data.. -- Where will use a column that has an index. THe Primary key is usually going to have Clustered index - that way it sorts the data.
+    - SO THAT IS GOING TO TAKE TIME.
+
+-- To solve the above problem.
+    - WE CAN USE CLUSTERED INDEX.. 
+        - Where we can organize the data .. and tell the database . the 1000000 is between 999999 to 1000001  == That way it will find the data faster.
+
+==CLUSTERED INDEX is faster and better BUT  THE PROBLEM WITH THE CLUSTERED INDEX is.. it can be only one .. like here THe primary key is only one.
+- it can be usualy pk but does not necessarily that.- it depends on the goal for the database.
+
+==NON CLUSTERED INDEX  is also good but IT IS RECOMMENDED when ..
+    When you have like.. Where first_name = bhavin... but there might be many bhavin... So becarefull when using non clustered index.. as it will update all the columns.
+
+
+Another use of Indexes
+ - IT INCREASEES THE SPEED OF JOIN 
+    - join takes data from one table and another table and display togather.. by pk and fk connections.
+    - whenever we are joining two tables. make sure that they are indexed.
 
 
 
@@ -325,5 +528,86 @@ Modelity
 
 
 
+=================================
+Datatypes in Database
 
- 
+- we have tell db .. for every column there is a datatype.
+
+= mainly three main kind of categories in datatype
+
+1. Date
+
+
+
+
+
+1. String
+    - any charater or letter  .. "hey", "3"
+    categories
+        - char(8)   --- means the character there will be 8 only... even if you put 6 digit or value or letter .. there will be 2 blank characters there.
+                    --- means the value or size of the character will not change.
+
+        - varchar(8) -- this means upto 8 characters it can take.... 
+                     -- if you put 6 digit or letter .. it will be six only. The length can change or upto 8 in this case.
+                     -- var is for variable. so the length will vary.
+
+        - text     -- usually used for large text.. like comment box.. about box., messages etc.
+
+
+2. Numeric
+    - it doesnt have quotes. its just the number we use.
+    categories.
+        - decimal
+            it uses base 10 ( 0, 1, 2, 3, 4,5 ,6 ,7,8,9)  -- verses binary -- that is base 2 (0 and 1)
+        - floating point
+            it uses binary (it strored in binanry) - of course we can present it as decimal      
+        
+        Decimal vs Floating point - which one to use.
+        - decimal generally more accurate on mathematics to a point - there are some problems that can comeup this.. which we can check or research .. in case needed.
+        - Floating point(Binanry stored) HAS SOME PROBLEM IN MATHEMATICAL EQUIATION AND NUMBERS.
+            for example,
+                for  value    0.0215
+                           For Binary(floating point) 
+                                after .  any value or digit .. devides by 1/2 , which is not mathematically correct.. Usually..its 1/10... So every digit if we devide by 10 then the actual value come.. BUT ITS NOT THE CASE WITH BINARY SYSTEM/.
+                                
+                                so when its BINARY(floating).. 0.0215  so its 0.0 1/2 .. then 0.02 -- its (1/2)/2 = 1/4 will give me ..0.02  and if we devide 0.021 again by (1/4)/2 = 1/8  ... and so on...       
+                                                        - we add 1/2)*0 = 0 and 0.02*1/4 = 0.05 this is not correct .. and so on 
+                                            - SO THIS IS NOT AT ALL CORRECT FROM METHAMATICAL PERSPECTIVE.
+                            So when its 0.1   -- THAT IS NOT POSSIBLE TO STORE IN BINARY> as we dont have any other decimal.. and hard to get the nearest value
+        
+        SO FOR ACCURACY .. WE HAVE STORE IT IN DECIMAL INSTEAD OF BINARY
+
+        -Integer
+            - only stored whole number like 2, 5 ,-34 etc. .. and does not take.. decimal type . like..;  2.2, 2.16 etc.
+        
+        -unsinged or signed
+            unsigned - MEANS THAT CANNOT BE NEGATIVE
+            SIGNED - CAN BE POSITIVE OR NEGATIVE BOTH.
+
+
+        - double
+            -Double types are used when we are not certain of the behavior of our data.
+            The input data is interpreted as floating point integer values. Some data may take more digits to the right of the decimal point. While the storage size of the decimal type is variable, the double type takes 8 bytes storage size. Also double precision ranges up to fifteen decimal digits.
+
+    
+3. Date
+    
+    - Datetime
+        - Stores a date and time   - the way it looks varies on the database management system.
+    -Date
+        stores a date
+    -Time
+        stores a time
+    -Timestamp 
+        - Exact moment or time when someting was created or done. - it can be in milliseconds or day hr seconds. etcs. month. etc.
+        - its usually for somehting like when account was created or when the trasaction happeed? or when something happened,
+        - when we update.. that also it tracks.. it also keeps data when that row entered into db.
+
+
+
+
+
+JOINS -- START THI LATER .. WHEN WE USE THIS> IN FUTURE>.
+
+https://www.youtube.com/watch?v=ztHopE5Wnpc&ab_channel=freeCodeCamp.org    - at 6 hr and 27 minutes.
+
