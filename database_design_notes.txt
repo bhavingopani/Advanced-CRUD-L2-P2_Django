@@ -611,3 +611,14 @@ JOINS -- START THI LATER .. WHEN WE USE THIS> IN FUTURE>.
 
 https://www.youtube.com/watch?v=ztHopE5Wnpc&ab_channel=freeCodeCamp.org    - at 6 hr and 27 minutes.
 
+
+
+-----------
+temporary copy
+
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'crudapp2',
+        'USER': 'root',
+        'PASSWORD': '1478',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '',
