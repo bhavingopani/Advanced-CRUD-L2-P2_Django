@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Add/Create User</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+    <center>
+        <h1> Add user is working </h1>
+        <br/><br/> <br/>
+
+        <form action="" method=POST>
+            {% csrf_token %}
+                    
+                {{ from.as_p }}        {% comment %} To display the actual form on the page. {% endcomment %}
+                                        {% comment %} this has to be  passed in into the context dictionary then only it will display {% endcomment %}
+
+            <input type="submit" value="Submit">
+
+        </form>
+
+    </center>
+
+        
+        <script src="" async defer></script>
+    </body>
+</html>
